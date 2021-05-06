@@ -12,6 +12,12 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 
+using Microsoft.EntityFrameworkCore;
+using Npgsql.EntityFrameworkCore;
+using Npgsql;
+
+using GoodBooks.Data;
+
 namespace GoodBooks.Web
 {
     public class Startup
@@ -28,6 +34,12 @@ namespace GoodBooks.Web
         {
 
             services.AddControllers();
+
+            services.AddDbContext<GoodBooksDbContext>(options => {
+                options.EnableDetailedErrors();
+                options.UseNpgsql(Configuration.GetConnectionString("goodbooks.dev"));
+            });
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "GoodBooks.Web", Version = "v1" });

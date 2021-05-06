@@ -5,6 +5,8 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
+using GoodBooks.Services;
+
 namespace GoodBooks.Web.Controllers
 {
     [ApiController]
@@ -20,9 +22,8 @@ namespace GoodBooks.Web.Controllers
         }
 
         [HttpGet("/")]
-        public StatusCodeResult GetSample()
-        {
-
+        public StatusCodeResult GetSample() {
+            // var _db = 
             // public static IEnumerable<int> sample = new List<int>{2,2,2,2};
 
             return new StatusCodeResult(400);
