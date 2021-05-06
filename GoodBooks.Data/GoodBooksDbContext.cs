@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Npgsql.EntityFrameworkCore;
-using Npgsql;
-using Microsoft.EntityFrameworkCore.Design;
+// using Npgsql.EntityFrameworkCore;
+// using Npgsql;
+// using Microsoft.EntityFrameworkCore.Design;
 using GoodBooks.Data.Models;
 
 

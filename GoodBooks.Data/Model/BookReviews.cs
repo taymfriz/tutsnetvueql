@@ -11,7 +11,7 @@ namespace GoodBooks.Data.Models
         public DateTime CreatedOn { get; set; }
         public DateTime UpdatedOn { get; set; }
 
-        public abstract Book Book { get; set; }
+        public Book Book { get; set; }
 
 
     }

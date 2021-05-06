@@ -14,10 +14,21 @@ dotnet add reference -h|--help
 
 
 
-##DATABASE
->> dotnet tool install --global dotnet-ef
+# DATABASE
+>> if ef tools is not installed, install it dummy 
+```terminal
+dotnet tool install --global dotnet-ef
+```
 
->> dotnet ef database update -- --environment Development
->> dotnet ef database update -- --environment Production
+# Update DB base on updated model (using terminal)
+```terminal
+set ASPNETCORE_ENVIRONMENT=Development
 
->> dotnet ef database update InitialCreate
+dotnet ef migrations add InitMigrationsNameHere  --verbose --startup-project ../GoodBooks.Web/
+
+dotnet ef database update  --verbose --startup-project ../GoodBooks.Web/
+
+```
+
+
+
