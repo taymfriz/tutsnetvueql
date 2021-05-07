@@ -1,11 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
 using GoodBooks.Services;
+using GoodBooks.Data.Models;
+using GoodBooks.Web.RequestModels;
 
 namespace GoodBooks.Web.Controllers
 {
@@ -15,18 +16,48 @@ namespace GoodBooks.Web.Controllers
     {
 
         private readonly ILogger<GoodBooksController> _logger;
+        private readonly IBookService _bookService;
 
-        public GoodBooksController(ILogger<GoodBooksController> logger)
+        public GoodBooksController(ILogger<GoodBooksController> logger, IBookService bookService)
         {
             _logger = logger;
+            _bookService = bookService;
         }
 
-        [HttpGet("/")]
-        public StatusCodeResult GetSample() {
-            // var _db = 
-            // public static IEnumerable<int> sample = new List<int>{2,2,2,2};
+        [HttpGet("/api/books")]
+        public ActionResult GetBooks() {
+            var b = _bookService.GetAllBooks();
+            return Ok(b);
+        }
 
-            return new StatusCodeResult(400);
+        [HttpGet("/api/book/{id}")]
+        public ActionResult GetBook(int id) {
+            var b = _bookService.GetBook(id);
+            return Ok(b);
+        }
+
+        [HttpDelete("/api/book/{id}")]
+        public ActionResult DeleteBook(int id) {
+            _bookService.DeleteBook(id);
+            return Ok();
+        }
+
+
+        [HttpPost("/api/book")]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public ActionResult CreateBook([FromBody] RequestBook rbook){
+            var now = DateTime.UtcNow;
+            var book = new Book {
+                Author = rbook.Author,
+                Title = rbook.Title,
+                CreatedOn = now,
+                UpdatedOn = now,
+            };
+
+            _bookService.AddBook(book); 
+            // return Ok();
+            return CreatedAtAction(nameof(CreateBook), new { id = 2 });
         }
     }
 }

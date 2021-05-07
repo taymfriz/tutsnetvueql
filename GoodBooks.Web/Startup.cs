@@ -1,12 +1,12 @@
-// using System;
-// using System.Collections.Generic;
-// using System.Linq;
-// using System.Threading.Tasks;
-// using Microsoft.Extensions.Logging;
-// using Npgsql.EntityFrameworkCore;
-// using Npgsql;
-// using Microsoft.AspNetCore.HttpsPolicy;
-// using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
+using Npgsql.EntityFrameworkCore;
+using Npgsql;
+using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Mvc;
 
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -18,6 +18,7 @@ using Microsoft.OpenApi.Models;
 using Microsoft.EntityFrameworkCore;
 
 using GoodBooks.Data;
+using GoodBooks.Services;
 
 namespace GoodBooks.Web
 {
@@ -33,13 +34,15 @@ namespace GoodBooks.Web
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
+            services.AddCors();
             services.AddControllers();
 
             services.AddDbContext<GoodBooksDbContext>(options => {
                 options.EnableDetailedErrors();
                 options.UseNpgsql(Configuration.GetConnectionString("goodbooks.dev"));
             });
+            services.AddTransient<IBookService, BookService>();
+            // services.AddScoped<IBookService, BookService>();
 
             services.AddSwaggerGen(c =>
             {
@@ -58,9 +61,10 @@ namespace GoodBooks.Web
             }
 
             // app.UseHttpsRedirection();
-
+ 
             app.UseRouting();
 
+            app.UseCors(builder => builder.AllowAnyMethod().AllowAnyHeader().WithOrigins("http://localhost:8080"));
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
