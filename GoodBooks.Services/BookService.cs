@@ -24,7 +24,11 @@ namespace GoodBooks.Services
         {
             var bookToDelete = _db.Books.Find(id);
             if(bookToDelete != null){
+                System.Console.WriteLine("deleting", bookToDelete);
                 _db.Books.Remove(bookToDelete);
+                _db.SaveChanges();
+            } else {
+                throw new InvalidOperationException("Cant delete non existing book.");
             }
         }
         public Book GetBook(int id)
